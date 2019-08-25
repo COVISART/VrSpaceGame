@@ -38,7 +38,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class SU_AsteroidField : MonoBehaviour {	
+public class SU_AsteroidField : MonoBehaviour
+{	
 	// Poly Count (quality) of the asteroids in the field
 	public SU_Asteroid.PolyCount polyCount = SU_Asteroid.PolyCount.HIGH;
 	// Poly Count (quality) of the asteroid colliders (LOW = fast, HIGH = slow)

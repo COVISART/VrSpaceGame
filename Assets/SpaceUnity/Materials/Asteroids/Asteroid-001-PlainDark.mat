@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Asteroid-001-PlainDark
   m_Shader: {fileID: 4800000, guid: 5bae034bb2fab6a409ba764d73ee146a, type: 3}
   m_ShaderKeywords: 
@@ -31,7 +32,7 @@ Material:
     - _InnerRadius: 100
     - _OuterRadius: 110
     - _ScaleFalloffExp: 1
-    - _Shininess: 0.078125
+    - _Shininess: 0.03
     m_Colors:
     - _AsteroidOrigin: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0.6838235, g: 0.6838235, b: 0.6838235, a: 1}

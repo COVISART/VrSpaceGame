@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/CockpitControl.unity
-    guid: 2d03c446b655cef4987dc7f0307cdbd1
+    path: Assets/Scenes/DataControl.unity
+    guid: bd169c3077bbe1d42aa0debba028edf7
   m_configObjects: {}
