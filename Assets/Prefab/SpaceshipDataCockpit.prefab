@@ -4793,6 +4793,7 @@ GameObject:
   - component: {fileID: 9036659157995593954}
   - component: {fileID: 9006844444042664292}
   - component: {fileID: 9069518818611117400}
+  - component: {fileID: 9173274514037908311}
   m_Layer: 0
   m_Name: SpaceshipDataCockpit
   m_TagString: Untagged
@@ -5202,6 +5203,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &9173274514037908311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9006844444038758536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4392e36096d76dc4ea689739f2cbd52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 0}
+  AxisX: {fileID: 0}
+  AxisY: {fileID: 0}
+  AxisZ: {fileID: 0}
+  x: 0
+  y: 0
+  z: 0
+  VrCameraLocal: {x: 0, y: 0, z: 0, w: 0}
+  VrCameraGlobar: {x: 0, y: 0, z: 0, w: 0}
+  VrCameraEulerAngles: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1001 &912506584104138103
 PrefabInstance:
   m_ObjectHideFlags: 0
