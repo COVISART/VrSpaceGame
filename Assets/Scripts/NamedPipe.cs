@@ -19,6 +19,7 @@ public class NamedPipe : MonoBehaviour
     public Text AxisX, AxisY, AxisZ;
     public float x, y, z;
     public Quaternion VrCameraLocal, VrCameraGlobar, VrCameraEulerAngles;
+    public Quaternion VrCameraEulerAnglesFurkanEdition;
     private static NamedPipeClientStream pipeClient;
     void Awake()
     {
@@ -26,12 +27,47 @@ public class NamedPipe : MonoBehaviour
         InputTracking.disablePositionalTracking = true;
     }
 
+    private Quaternion LastPosition;
+
+    Quaternion checkLastFrame(Quaternion VrCameraEulerAngles)
+    {
+        float findAxis(float currentY)
+        {
+            if (Math.Abs(currentY - LastPosition.y) > 90)
+            {
+                var retVal = currentY + 180;
+                if (retVal < 0)
+                {
+                    retVal += 360;
+                }
+
+                return retVal % 360;
+            }
+            else
+            {
+                return currentY;
+            }
+        }
+
+        if (LastPosition != null)
+        {
+            var yAxis = findAxis( VrCameraEulerAngles.y);
+            var zAxis = findAxis(VrCameraEulerAngles.z);
+
+            return new Quaternion(VrCameraEulerAngles.x, yAxis, zAxis, VrCameraEulerAngles.w);
+        }
+
+        return new Quaternion();
+    }
     private void Update()
     {
         VrCameraLocal = new Quaternion(targetObject.localRotation.x , targetObject.localRotation.y, targetObject.localRotation.z, 1);
         VrCameraGlobar = new Quaternion(targetObject.rotation.x, targetObject.rotation.y, targetObject.rotation.z, 1);
         VrCameraEulerAngles = new Quaternion(targetObject.localEulerAngles.x, targetObject.localEulerAngles.y, targetObject.localEulerAngles.z, 1);
 
+        VrCameraEulerAnglesFurkanEdition = checkLastFrame(VrCameraEulerAngles);
+
+        LastPosition = VrCameraEulerAnglesFurkanEdition;
         try
         {
             var ret =SendOfData((VrCameraEulerAngles.x + "/" + VrCameraEulerAngles.z).ToString());
