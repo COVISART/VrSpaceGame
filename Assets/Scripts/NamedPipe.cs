@@ -21,10 +21,10 @@ public class NamedPipe : MonoBehaviour
     public Quaternion VrCameraLocal, VrCameraGlobar, VrCameraEulerAngles;
     public Quaternion VrCameraEulerAnglesFurkanEdition;
     private static NamedPipeClientStream pipeClient;
-    void Awake()
+    void Start()
     {
         InputTracking.Recenter();
-        InputTracking.disablePositionalTracking = true;
+        InputTracking.disablePositionalTracking = false;
     }
 
     private Quaternion LastPosition;
