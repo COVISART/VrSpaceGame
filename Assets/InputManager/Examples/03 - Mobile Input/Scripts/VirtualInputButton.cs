@@ -21,17 +21,62 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Luminosity.IO.Examples
 {
-	public class ConvertAxisToVibration : MonoBehaviour
+	public class VirtualInputButton : Selectable
 	{
-		private void Update()
-		{
-			float l = InputManager.GetAxis("LeftVibration");
-			float r = InputManager.GetAxis("RightVibration");
+		[SerializeField]
+		private BindingReference m_buttonBinding = null;
 
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
+		private ButtonState m_buttonState;
+
+		protected override void Awake()
+		{
+			base.Awake();
+			if(Application.isPlaying)
+			{
+				m_buttonState = ButtonState.Released;
+				InputManager.RemoteUpdate += OnRemoteInputUpdate;
+			}
+		}
+
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+			if(Application.isPlaying)
+			{
+				InputManager.RemoteUpdate -= OnRemoteInputUpdate;
+			}
+		}
+
+		private void OnRemoteInputUpdate(PlayerID playerID)
+		{
+			if(playerID == PlayerID.One)
+			{
+				InputBinding inputBinding = m_buttonBinding.Get();
+				inputBinding.SetRemoteButtonState(m_buttonState);
+			}
+
+			if(m_buttonState == ButtonState.JustPressed)
+				m_buttonState = ButtonState.Pressed;
+
+			if(m_buttonState == ButtonState.JustReleased)
+				m_buttonState = ButtonState.Released;
+		}
+
+		public override void OnPointerDown(PointerEventData eventData)
+		{
+			base.OnPointerDown(eventData);
+			m_buttonState = ButtonState.JustPressed;
+		}
+
+		public override void OnPointerUp(PointerEventData eventData)
+		{
+			base.OnPointerUp(eventData);
+			m_buttonState = ButtonState.JustReleased;
 		}
 	}
 }

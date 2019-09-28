@@ -24,14 +24,19 @@ using UnityEngine;
 
 namespace Luminosity.IO.Examples
 {
-	public class ConvertAxisToVibration : MonoBehaviour
+	public class LoadInputsOnStart : MonoBehaviour 
 	{
-		private void Update()
-		{
-			float l = InputManager.GetAxis("LeftVibration");
-			float r = InputManager.GetAxis("RightVibration");
+		[SerializeField]
+		private int m_exampleID = 0;
 
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
+		private void Awake()
+		{
+			string savePath = PathUtility.GetInputSaveFolder(m_exampleID) + "/input_config.xml";
+			if(System.IO.File.Exists(savePath))
+			{
+				InputLoaderXML loader = new InputLoaderXML(savePath);
+				InputManager.Load(loader);
+			}
 		}
 	}
 }

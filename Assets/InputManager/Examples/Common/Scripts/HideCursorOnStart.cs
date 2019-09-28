@@ -24,14 +24,11 @@ using UnityEngine;
 
 namespace Luminosity.IO.Examples
 {
-	public class ConvertAxisToVibration : MonoBehaviour
+	public class HideCursorOnStart : MonoBehaviour
 	{
-		private void Update()
+		private void Start()
 		{
-			float l = InputManager.GetAxis("LeftVibration");
-			float r = InputManager.GetAxis("RightVibration");
-
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
+			Cursor.visible = false;
 		}
 	}
 }

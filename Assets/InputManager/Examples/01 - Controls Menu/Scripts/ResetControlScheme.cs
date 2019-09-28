@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -21,17 +21,48 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
+using System.IO;
 
 namespace Luminosity.IO.Examples
 {
-	public class ConvertAxisToVibration : MonoBehaviour
+	public class ResetControlScheme : MonoBehaviour 
 	{
-		private void Update()
+		[SerializeField]
+		private TextAsset m_defaultInputProfile = null;
+		[SerializeField]
+		private string m_controlSchemeName = null;
+		
+		public void ResetInputs()
 		{
-			float l = InputManager.GetAxis("LeftVibration");
-			float r = InputManager.GetAxis("RightVibration");
+			ControlScheme controlScheme = InputManager.GetControlScheme(m_controlSchemeName);
+			ControlScheme defControlScheme = null;
 
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
+			using(StringReader reader = new StringReader(m_defaultInputProfile.text))
+			{
+				InputLoaderXML loader = new InputLoaderXML(reader);
+				defControlScheme = loader.Load(m_controlSchemeName);
+			}
+
+			if(defControlScheme != null)
+			{
+				if(defControlScheme.Actions.Count == controlScheme.Actions.Count)
+				{
+					for(int i = 0; i < defControlScheme.Actions.Count; i++)
+					{
+						controlScheme.Actions[i].Copy(defControlScheme.Actions[i]);
+					}
+
+					InputManager.Reinitialize();
+				}
+				else
+				{
+					Debug.LogError("Current and default control scheme don't have the same number of actions");
+				}
+			}
+			else
+			{
+				Debug.LogErrorFormat("Default input profile doesn't contain a control scheme named '{0}'", m_controlSchemeName);
+			}
 		}
 	}
 }

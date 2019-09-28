@@ -21,17 +21,55 @@
 //	ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #endregion
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Luminosity.IO.Examples
 {
-	public class ConvertAxisToVibration : MonoBehaviour
+	public class InvertAnalogAxis : MonoBehaviour 
 	{
-		private void Update()
-		{
-			float l = InputManager.GetAxis("LeftVibration");
-			float r = InputManager.GetAxis("RightVibration");
+		[SerializeField]
+		private string m_controlSchemeName = null;
+		[SerializeField]
+		private string m_actionName = null;
+		[SerializeField]
+		private int m_bindingIndex = 0;
+		[SerializeField]
+		private Text m_status = null;
 
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
+		private InputAction m_inputAction;
+
+		private void Awake()
+		{
+			InitializeInputAction();
+			InputManager.Loaded += InitializeInputAction;
+		}
+
+		private void OnDestroy()
+		{
+			InputManager.Loaded -= InitializeInputAction;
+		}
+
+		private void InitializeInputAction()
+		{
+			m_inputAction = InputManager.GetAction(m_controlSchemeName, m_actionName);
+			if(m_inputAction != null)
+			{
+				m_status.text = m_inputAction.Bindings[m_bindingIndex].Invert ? "On" : "Off";
+			}
+			else
+			{
+				m_status.text = "Off";
+				Debug.LogErrorFormat("Input configuration '{0}' does not exist or axis '{1}' does not exist", m_controlSchemeName, m_actionName);
+			}
+		}
+
+		public void OnClick()
+		{
+			if(m_inputAction != null)
+			{
+				m_inputAction.Bindings[m_bindingIndex].Invert = !m_inputAction.Bindings[m_bindingIndex].Invert;
+				m_status.text = m_inputAction.Bindings[m_bindingIndex].Invert ? "On" : "Off";
+			}
 		}
 	}
 }

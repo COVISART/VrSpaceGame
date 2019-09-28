@@ -1,4 +1,4 @@
-﻿#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
+#region [Copyright (c) 2018 Cristian Alexandru Geambasu]
 //	Distributed under the terms of an MIT-style license:
 //
 //	The MIT License
@@ -24,14 +24,19 @@ using UnityEngine;
 
 namespace Luminosity.IO.Examples
 {
-	public class ConvertAxisToVibration : MonoBehaviour
-	{
-		private void Update()
-		{
-			float l = InputManager.GetAxis("LeftVibration");
-			float r = InputManager.GetAxis("RightVibration");
+    public class TPSInputController : MonoBehaviour
+    {
+        [SerializeField]
+        private PlayerID m_playerID = PlayerID.One;
+        [SerializeField]
+        private float m_speed = 0.0f;
 
-			GamepadState.SetVibration(new GamepadVibration(l, r, 0.0f, 0.0f), GamepadIndex.GamepadOne);
-		}
-	}
+        private void Update()
+        {
+            Vector3 moveVector = new Vector3(InputManager.GetAxis("Horizontal", m_playerID), 0,
+                                             InputManager.GetAxis("Vertical", m_playerID));
+            
+            transform.position += moveVector.normalized * m_speed * Time.deltaTime;
+        }
+    }
 }
